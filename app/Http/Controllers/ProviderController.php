@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ProviderController extends Controller
+{
+    public function index()
+    {
+
+    }
+
+    public function details(int $providerId)
+    {
+
+    }
+}

@@ -1,3 +1,48 @@
+#Providers directory
+List of service providers with:  
+●	Name, short description, logo, and category  
+●	Ability to filter by category  
+●	Each provider has a profile page  
+
+##Launch project
+
+
+
+###Launch with Docker
+
+<code>cp .env.example.docker .env</code>
+
+###Launch w/o Docker
+If you prefer use project w/o docker...  
+<code>cp .env.example .env</code>
+
+...
+###Launch
+<code>php artisan key:generate</code>
+
+<code>php artisan migrate</code>  
+
+<code>php artisan db:seed</code>
+
+##DB Schema choice explanation
+
+Product <code>name</code> is index for quick sort and search in future
+
+<code>category_id</code> is <code>restrictOnDelete()</code>. while we have any Provider with this category.
+Probably can be changed to <code>nullable()</code> if category not required, but we have filter by category, 
+so <code>restrictOnDelete()</code> in my opinion the best choice.
+
+Other fields will not use in sorting. 
+Probably description can by searchable in the future, but we will need something like ElasticSearch.
+
+Category <code>name</code> is index also for possible future sort and search.
+
+I'm using general id, not uuid or slug, coz speed was the main request for this task.
+
+##Design decisions  
+##Performance optimizations  
+##Areas for future enhancement
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
