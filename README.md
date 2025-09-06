@@ -1,8 +1,8 @@
 #Providers directory
 List of service providers with:  
-●	Name, short description, logo, and category  
-●	Ability to filter by category  
-●	Each provider has a profile page  
+- Name, short description, logo, and category  
+- Ability to filter by category  
+- Each provider has a profile page  
 
 ##Launch project
 
@@ -26,22 +26,44 @@ If you prefer use project w/o docker...
 
 ##DB Schema choice explanation
 
-Product <code>name</code> is index for quick sort and search in future
+- Product <code>name</code> is index for quick sort and search in future
 
-<code>category_id</code> is <code>restrictOnDelete()</code>. while we have any Provider with this category.
+- <code>category_id</code> is <code>restrictOnDelete()</code>. while we have any Provider with this category.
 Probably can be changed to <code>nullable()</code> if category not required, but we have filter by category, 
 so <code>restrictOnDelete()</code> in my opinion the best choice.
 
-Other fields will not use in sorting. 
+- Other fields will not use in sorting. 
 Probably description can by searchable in the future, but we will need something like ElasticSearch.
 
-Category <code>name</code> is index also for possible future sort and search.
+- Category <code>name</code> is index also for possible future sort and search.
 
-I'm using general id, not uuid or slug, coz speed was the main request for this task.
+- I'm using general id, not uuid or slug, coz speed was the main request for this task.
 
-##Design decisions  
+##Design decisions
+
+<b>Vite</b> for build bundles. Also vite make development faster
+
+<b>Tailwind</b> make responsive cross-browser interface for any resolution from phone to PC
+
+### Rendering Strategy
+
+- The page renders the full layout immediately with minimal blocking
+- Data for categories and providers is fetched asynchronously via Vue 3 + fetch API
+- A lightweight skeleton loader is displayed while data loads
+- This significantly reduces TTFB and LCP, and ensures fast perceived performance
+
+Vue.js in bundle. Probably from CDN it will be bit faster. But needs more logic for control version and so on  
+Also used export with <b>vite</b>. so our bundle can be smaller than CDN Vue package
+It depend on users behavior. 
+- if we expect just one visit per month - CDN with fallback from our server preferable. 
+- if we expect multiple usage per day/week - bundle is ok.
+
 ##Performance optimizations  
 ##Areas for future enhancement
+
+Profile page can be open as modal window. so clients will stay on page. it reduce time for users and reduce load for server.
+Switch to SPA or Inertian with App.vue as entrypoint
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

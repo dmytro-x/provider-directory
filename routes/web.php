@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [ProviderController::class, 'index']);
 Route::get('/providers', [ProviderController::class, 'index'])->name('providers.index');
-Route::get('/providers/{providerId}', [ProviderController::class, 'details'])->name('providers.details');
+Route::get('/providers/{provider}', [ProviderController::class, 'details'])->name('providers.details');
