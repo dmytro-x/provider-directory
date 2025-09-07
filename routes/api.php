@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/providers', [ProviderController::class, 'index']);
+Route::get('/providers', [ProviderController::class, 'index'])->name('api.providers.index');
 
-Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories', [CategoryController::class, 'index'])->name('api.categories.index');
