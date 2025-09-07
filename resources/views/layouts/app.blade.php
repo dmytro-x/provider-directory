@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Service Providers')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Service Provider Directory">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -18,8 +19,5 @@
     @yield('content')
 </main>
 
-<footer class="text-center text-sm text-gray-500 py-6">
-    &copy; {{ date('Y') }} Service Provider Test Project
-</footer>
 </body>
 </html>

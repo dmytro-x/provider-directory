@@ -1,7 +1,7 @@
 <template>
     <div>
-        <label class="block mb-2">Filter by category:</label>
-        <select v-model="selectedCategory" @change="fetchProviders" class="border bg-white p-2 mb-4">
+        <label for="category-filter" class="block mb-2">Filter by category:</label>
+        <select id="category-filter" v-model="selectedCategory" @change="fetchProviders" class="border bg-white p-2 mb-4">
             <option value="">-- All Categories --</option>
             <option v-for="cat in categories" :key="cat.id" :value="cat.id">
                 {{ cat.name }}
@@ -16,7 +16,7 @@
                      class="h-32 w-full object-contain mb-4"
                      loading="lazy">
                 <h2 class="text-xl font-semibold">{{ provider.name }}</h2>
-                <p class="text-sm text-gray-700">{{ provider.short_description }}</p>
+                <p class="text-sm text-gray-700 line-clamp-2 md:h-[3em]">{{ provider.short_description }}</p>
                 <p class="text-xs text-gray-500 mt-2">Category: {{ provider.category }}</p>
 
                 <a
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 const providers = ref([])
 const categories = ref([])
@@ -69,7 +69,20 @@ const fetchCategories = async () => {
     }
 };
 
+watch(selectedCategory, (newVal) => {
+    if (newVal !== null && newVal !== undefined) {
+        sessionStorage.setItem('selectedCategoryId', newVal);
+    } else {
+        sessionStorage.removeItem('selectedCategoryId');
+    }
+});
+
 onMounted(async () => {
+    const saved = sessionStorage.getItem('selectedCategoryId');
+    if (saved !== null) {
+        selectedCategory.value = saved;
+    }
+
     await fetchCategories()
     await fetchProviders()
 })
