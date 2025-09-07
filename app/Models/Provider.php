@@ -20,4 +20,9 @@ class Provider extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeFilterByCategory($query, $categoryId)
+    {
+        return $query->where('category_id', $categoryId);
+    }
 }
