@@ -1,25 +1,19 @@
-#Providers directory
+# Providers directory
 List of service providers with:  
 - Name, short description, logo, and category  
 - Ability to filter by category  
 - Each provider has a profile page  
 
-##Launch project
+## Launch project
 
 #### Clone the repository  
 <code>git clone https://github.com/dmytro-x/provider-directory && cd provider-directory </code>  
 #### Or clone directly into the current directory 
 <code>git clone https://github.com/dmytro-x/provider-directory . </code>
 
-###Launch with Docker
-
-
-
+### Launch with Docker
 - app will respond on localhost:8098
-
-- phpMyAdmin on localhost:8089  
-user: laravel  
-password: secret
+- phpMyAdmin on localhost:8089
 
 If these ports are already in use feel fre to change in <code>docker-compose.yml</code>
 
@@ -32,6 +26,8 @@ copy .env
 
 #### Launch
 
+<code>sudo chown -R www-data:www-data . </code>
+
 <code>docker compose exec app composer install</code>
 
 <code>docker compose exec app php artisan key:generate</code>
@@ -42,7 +38,7 @@ copy .env
 #### PhpMyAdmin → http://localhost:8089 (user: laravel, password: secret)
 
 
-###Launch w/o Docker
+### Launch w/o Docker
 If you prefer use project w/o docker launch:  
 <code>cp .env.example .env</code>
 
@@ -54,7 +50,7 @@ If you prefer use project w/o docker launch:
 
 <code>php artisan db:seed</code>
 
-##DB Schema choice explanation
+## DB Schema choice explanation
 
 - Product <code>name</code> is index for quick sort and search in future
 
@@ -69,7 +65,7 @@ Probably description can by searchable in the future, but we will need something
 
 - I'm using general id, not uuid or slug, coz speed was the main request for this task.
 
-##Design decisions 
+## Design decisions 
 - <b>Laravel</b> as main framework. It provides routing, ORM (Eloquent), migrations, validation and security features out of the box. This makes development faster and code more consistent.
 
 - Data getting via API. It's make ability to use this API in future for other clients, SPA, mobile app and so on.
@@ -85,7 +81,7 @@ Probably description can by searchable in the future, but we will need something
 - A lightweight skeleton loader is displayed while data loads
 - This significantly reduces TTFB and LCP, and ensures fast perceived performance
 
-##Performance optimizations
+## Performance optimizations
 
 - Deferred Rendering: The page layout renders instantly while provider data and categories are fetched asynchronously via <code>fetch()</code> in a Vue 3 component.
 - Lazy Loading: Provider logos use loading="lazy" to reduce LCP and improve perceived performance.
@@ -95,7 +91,7 @@ Probably description can by searchable in the future, but we will need something
 - GZIP compression is enabled at the NGINX layer to reduce transfer size of JavaScript, CSS, and JSON responses.
 
 
-##Areas for future enhancement
+## Areas for future enhancement
 
 - Add pagination or lazy loading on scroll. It's reduce query load and solve growing issue.
 After this we can cache in redis first 10-20 Providers from overall list and from each category.
