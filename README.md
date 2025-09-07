@@ -6,21 +6,51 @@ List of service providers with:
 
 ##Launch project
 
-
+#### Clone the repository  
+<code>git clone https://github.com/dmytro-x/provider-directory && cd provider-directory </code>  
+#### Or clone directly into the current directory 
+<code>git clone https://github.com/dmytro-x/provider-directory . </code>
 
 ###Launch with Docker
 
+
+
+- app will respond on localhost:8098
+
+- phpMyAdmin on localhost:8089  
+user: laravel  
+password: secret
+
+If these ports are already in use feel fre to change in <code>docker-compose.yml</code>
+
+#### Build containers
+
+copy .env
 <code>cp .env.example.docker .env</code>
 
+<code>docker compose up -d --build</code>
+
+#### Launch
+
+<code>docker compose exec app composer install</code>
+
+<code>docker compose exec app php artisan key:generate</code>
+
+<code>docker compose exec app php artisan migrate --seed</code>
+
+#### App → http://localhost:8098
+#### PhpMyAdmin → http://localhost:8089 (user: laravel, password: secret)
+
+
 ###Launch w/o Docker
-If you prefer use project w/o docker...  
+If you prefer use project w/o docker launch:  
 <code>cp .env.example .env</code>
 
-...
-###Launch
+<code>composer install</code>
+
 <code>php artisan key:generate</code>
 
-<code>php artisan migrate</code>  
+<code>php artisan migrate</code>
 
 <code>php artisan db:seed</code>
 
@@ -39,30 +69,41 @@ Probably description can by searchable in the future, but we will need something
 
 - I'm using general id, not uuid or slug, coz speed was the main request for this task.
 
-##Design decisions
+##Design decisions 
+- <b>Laravel</b> as main framework. It provides routing, ORM (Eloquent), migrations, validation and security features out of the box. This makes development faster and code more consistent.
 
-<b>Vite</b> for build bundles. Also vite make development faster
+- Data getting via API. It's make ability to use this API in future for other clients, SPA, mobile app and so on.
 
-<b>Tailwind</b> make responsive cross-browser interface for any resolution from phone to PC
+- <b>Vite</b> for build bundles. Also vite make development faster
 
-### Rendering Strategy
+- <b>Tailwind</b> make responsive cross-browser interface for any resolution from phone to PC
+
+#### Rendering Strategy
 
 - The page renders the full layout immediately with minimal blocking
 - Data for categories and providers is fetched asynchronously via Vue 3 + fetch API
 - A lightweight skeleton loader is displayed while data loads
 - This significantly reduces TTFB and LCP, and ensures fast perceived performance
 
-Vue.js in bundle. Probably from CDN it will be bit faster. But needs more logic for control version and so on  
-Also used export with <b>vite</b>. so our bundle can be smaller than CDN Vue package
-It depend on users behavior. 
-- if we expect just one visit per month - CDN with fallback from our server preferable. 
-- if we expect multiple usage per day/week - bundle is ok.
+##Performance optimizations
 
-##Performance optimizations  
+- Deferred Rendering: The page layout renders instantly while provider data and categories are fetched asynchronously via <code>fetch()</code> in a Vue 3 component.
+- Lazy Loading: Provider logos use loading="lazy" to reduce LCP and improve perceived performance.
+- Used Eloquent <code>with()</code> to avoid N+1 issue
+- Vite Module Optimization: Scripts are included with <code>type="module"</code>
+- Minimal CSS: Tailwind is used with Vite for efficient styling and tree-shaking.
+- GZIP compression is enabled at the NGINX layer to reduce transfer size of JavaScript, CSS, and JSON responses.
+
+
 ##Areas for future enhancement
 
-Profile page can be open as modal window. so clients will stay on page. it reduce time for users and reduce load for server.
-Switch to SPA or Inertian with App.vue as entrypoint
+- Add pagination or lazy loading on scroll. It's reduce query load and solve growing issue.
+After this we can cache in redis first 10-20 Providers from overall list and from each category.
+- Add feature for search by name and description
+- Make a preview for logos with small size
+- Add view statistics for providers and cache the entire content (including the logo) for frequently accessed ones.
+- Add frontetnd error handler with saving on server side
+- Profile page can be open as modal window. so clients will stay on page. it reduce time for users and reduce load for server.
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
