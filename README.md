@@ -101,6 +101,13 @@ After this we can cache in redis first 10-20 Providers from overall list and fro
 - Add frontetnd error handler with saving on server side
 - Profile page can be open as modal window. so clients will stay on page. it reduce time for users and reduce load for server.
 
+## Tests
+
+The project includes feature tests for API endpoints.
+
+To run all tests:
+<code>php artisan test</code>
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
